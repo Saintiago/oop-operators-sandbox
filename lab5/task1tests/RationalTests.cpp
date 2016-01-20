@@ -185,8 +185,12 @@ BOOST_AUTO_TEST_CASE(operator_binary_minus)
 // (1/2) -= (1/6)  → (1/3)
 // (1/2) -= 1      → (-1/2)
 //////////////////////////////////////////////////////////////////////////
-
-
+	BOOST_AUTO_TEST_CASE(has_substracting_assignment_operator)
+	{
+		VerifyRational((CRational(1, 2) -= CRational(1, 6)), 1, 3);
+		VerifyRational((CRational(1, 2) -= 1), -1, 2);
+		VerifyRational((CRational(8, -16) -= CRational(1, 6)), -2, 3);
+	}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -301,7 +305,15 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 //	3 <= (7/2)     → true
 //	3 >= (8/2)     → false
 //////////////////////////////////////////////////////////////////////////
-
+	BOOST_AUTO_TEST_CASE(has_gte_lte_gt_lt_operators)
+	{
+		BOOST_CHECK(CRational(1, 2) >= CRational(1, 3));
+		BOOST_CHECK(!(CRational(1, 2) <= CRational(1, 3)));
+		BOOST_CHECK(CRational(3, 1) > 2);
+		BOOST_CHECK(CRational(1, 2) < 7);
+		BOOST_CHECK(3 <= CRational(7, 2));
+		BOOST_CHECK(!(3 >= CRational(8, 2)));
+	}
 
 
 
@@ -310,7 +322,12 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 //	std::ostream в формате <числитель>/<знаменатель>, 
 //	например: 7/15
 //////////////////////////////////////////////////////////////////////////
-
+	BOOST_AUTO_TEST_CASE(can_be_written_to_output_stream)
+	{
+		std::stringstream ss;
+		ss << CRational(7, 15);
+		BOOST_CHECK_EQUAL(ss.str(), "7/15");
+	}
 
 
 
@@ -319,6 +336,14 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 //	std::istream в формате <числитель>/<знаменатель>, 
 //	например: 7/15
 //////////////////////////////////////////////////////////////////////////
+	BOOST_AUTO_TEST_CASE(can_be_read_from_input_stream)
+	{
+		std::stringstream ss;
+		ss.str("7/15");
+		CRational rat;
+		ss >> rat;
+		VerifyRational(rat, 7, 15);
+	}
 
 
 

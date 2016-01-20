@@ -88,7 +88,7 @@ public:
 	// (1/2) -= (1/6)  → (1/3)
 	// (1/2) -= 1      → (-1/2)
 	//////////////////////////////////////////////////////////////////////////
-
+	CRational operator -= (CRational const & rational);
 
 
 
@@ -202,6 +202,14 @@ CRational const operator/(CRational const & rational1, CRational const & rationa
 const CRational operator -(CRational const & number1, CRational const & number2);
 
 CRational const operator *(CRational const& rational1, CRational const& rational2);
-bool operator == (CRational const & rational1, CRational const & rational2);
 
+bool operator == (CRational const & rational1, CRational const & rational2);
 bool operator != (CRational const & rational1, CRational const & rational2);
+
+bool operator >= (CRational const & rational1, CRational const & rational2);
+bool operator <= (CRational const & rational1, CRational const & rational2);
+bool operator > (CRational const & rational1, CRational const & rational2);
+bool operator < (CRational const & rational1, CRational const & rational2);
+
+std::ostream & operator << (std::ostream & stream, CRational const & rational);
+std::istream & operator >> (std::istream & stream, CRational & rational);

@@ -113,7 +113,13 @@ CRational CRational::operator += (CRational const & rational)
 //////////////////////////////////////////////////////////////////////////
 // TODO: 6. Реализовать оператор -=
 //////////////////////////////////////////////////////////////////////////
-
+CRational CRational::operator -= (CRational const & rational)
+{
+	m_numerator = (m_numerator * rational.GetDenominator()) - (rational.GetNumerator() * m_denominator);
+	m_denominator *= rational.GetDenominator();
+	Normalize();
+	return *this;
+}
 
 
 
@@ -189,14 +195,40 @@ bool operator != (CRational const & rational1, CRational const & rational2)
 //////////////////////////////////////////////////////////////////////////
 // TODO: 12. Реализовать операторы <, >, <=, >=
 //////////////////////////////////////////////////////////////////////////
+bool operator >= (CRational const & rational1, CRational const & rational2)
+{
+	return ((rational1.GetNumerator() * rational2.GetDenominator())
+		>= (rational2.GetNumerator() * rational1.GetDenominator()));
+}
 
+bool operator <= (CRational const & rational1, CRational const & rational2)
+{
+	return ((rational1.GetNumerator() * rational2.GetDenominator())
+		<= (rational2.GetNumerator() * rational1.GetDenominator()));
+}
+
+bool operator > (CRational const & rational1, CRational const & rational2)
+{
+	return ((rational1.GetNumerator() * rational2.GetDenominator())
+		> (rational2.GetNumerator() * rational1.GetDenominator()));
+}
+
+bool operator < (CRational const & rational1, CRational const & rational2)
+{
+	return ((rational1.GetNumerator() * rational2.GetDenominator())
+		< (rational2.GetNumerator() * rational1.GetDenominator()));
+}
 
 
 
 //////////////////////////////////////////////////////////////////////////
 // TODO: 13. Реализовать оператор вывода рационального числа в выходной поток 
 //////////////////////////////////////////////////////////////////////////
-
+std::ostream & operator << (std::ostream & stream, CRational const & rational)
+{
+	stream << rational.GetNumerator() << "/" << rational.GetDenominator();
+	return stream;
+}
 
 
 
@@ -204,5 +236,18 @@ bool operator != (CRational const & rational1, CRational const & rational2)
 //////////////////////////////////////////////////////////////////////////
 // TODO: 14. Реализовать оператор ввода рационального числа из входного потока 
 //////////////////////////////////////////////////////////////////////////
-
+std::istream & operator >> (std::istream & stream, CRational & rational)
+{
+	int numerator;
+	int denominator;
+	if ((stream >> numerator) && (stream.get() == '/') && (stream >> denominator))
+	{
+		rational = CRational(numerator, denominator);
+	}
+	else
+	{
+		stream.setstate(std::ios_base::failbit | stream.rdstate());
+	}
+	return stream;
+}
 
