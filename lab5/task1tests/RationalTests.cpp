@@ -358,6 +358,7 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 		ss << "7/e";
 		ss >> rat;
 		VerifyRational(rat, 0, 1);
+		BOOST_CHECK(ss.fail());
 	}
 
 	// может быть представлен в виде смешанной дроби
