@@ -33,7 +33,7 @@ void VerifyRational(const CRational & r, int expectedNumerator, int expectedDeno
 
 void VerifyCompoundFraction(const CRational & r, int expectedInt, int expectedNumerator, int expectedDenominator)
 {
-	std::pair<int, CRational> compound = r.ToCompoundFraction();
+	auto compound = r.ToCompoundFraction();
 	BOOST_CHECK_EQUAL(compound.first, expectedInt);
 	VerifyRational(compound.second, expectedNumerator, expectedDenominator);
 }
@@ -272,8 +272,8 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 	{
 		VerifyRational(CRational(1, 2) /= CRational(2, 3), 3, 4);
 		VerifyRational(CRational(1, 2) /= 3, 1, 6);
-
 		VerifyRational(CRational(1, 2) /= 1, 1, 2);
+		VerifyRational(CRational(8, 2) /= 1, 4, 1);
 
 		BOOST_CHECK_THROW(CRational(1, 2) /= CRational(1, 0), std::invalid_argument);
 		BOOST_CHECK_THROW(CRational(1, 2) /= 0, std::invalid_argument);
@@ -353,6 +353,11 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 		CRational rat;
 		ss >> rat;
 		VerifyRational(rat, 7, 15);
+
+		rat = CRational();
+		ss << "7/e";
+		ss >> rat;
+		VerifyRational(rat, 0, 1);
 	}
 
 	// может быть представлен в виде смешанной дроби
@@ -360,6 +365,10 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 	{
 		VerifyCompoundFraction(CRational(9, 4), 2, 1, 4);
 		VerifyCompoundFraction(CRational(-9, 4), -2, -1, 4);
+		VerifyCompoundFraction(CRational(3, 4), 0, 3, 4);
+		VerifyCompoundFraction(CRational(-3, 4), 0, -3, 4);
+		VerifyCompoundFraction(CRational(4, 4), 1, 0, 1);
+		VerifyCompoundFraction(CRational(-4, 4), -1, 0, 1);
 	}
 
 	// не принимает 0 в качестве знаменателя

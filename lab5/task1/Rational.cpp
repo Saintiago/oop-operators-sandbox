@@ -24,7 +24,7 @@ CRational::CRational(int numerator, int denominator)
 std::pair<int, CRational> CRational::ToCompoundFraction()const
 {
 	int intPart = 0;
-	CRational fractPart;
+	CRational fractPart(m_numerator, m_denominator);
 
 	if (abs(m_numerator) >= abs(m_denominator))
 	{
