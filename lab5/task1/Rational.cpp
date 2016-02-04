@@ -21,6 +21,20 @@ CRational::CRational(int numerator, int denominator)
 	Normalize();
 }
 
+std::pair<int, CRational> CRational::ToCompoundFraction()const
+{
+	int intPart = 0;
+	CRational fractPart;
+
+	if (abs(m_numerator) >= abs(m_denominator))
+	{
+		intPart = m_numerator / m_denominator;
+		fractPart = CRational(m_numerator - (intPart * m_denominator), m_denominator);
+	}
+
+	return std::pair<int, CRational>(intPart, fractPart);
+}
+
 int CRational::GetNumerator() const
 {
 	return m_numerator;
@@ -168,6 +182,10 @@ CRational & CRational::operator *=(CRational const & number)
 //////////////////////////////////////////////////////////////////////////
 CRational & CRational::operator/=(CRational const & rational)
 {
+	if (rational.GetNumerator() == 0)
+	{
+		throw std::invalid_argument("Division by zero");
+	}
 	m_numerator *= rational.GetDenominator();
 	m_denominator *= rational.GetNumerator();
 	Normalize();

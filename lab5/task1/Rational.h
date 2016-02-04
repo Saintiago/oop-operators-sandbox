@@ -9,6 +9,9 @@ class CRational final
 public:
 	CRational(int numerator = 0, int denominator = 1);
 
+	// Возвращает представление рационального числа в виде смешанной дроби
+	std::pair<int, CRational> ToCompoundFraction()const;
+
 	// Возвращает числитель
 	int GetNumerator() const;
 

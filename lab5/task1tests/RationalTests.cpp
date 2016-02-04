@@ -31,6 +31,13 @@ void VerifyRational(const CRational & r, int expectedNumerator, int expectedDeno
 	BOOST_CHECK_EQUAL(r.GetDenominator(), expectedDenominator);
 }
 
+void VerifyCompoundFraction(const CRational & r, int expectedInt, int expectedNumerator, int expectedDenominator)
+{
+	std::pair<int, CRational> compound = r.ToCompoundFraction();
+	BOOST_CHECK_EQUAL(compound.first, expectedInt);
+	VerifyRational(compound.second, expectedNumerator, expectedDenominator);
+}
+
 BOOST_AUTO_TEST_SUITE(Rational_number)
 	BOOST_AUTO_TEST_CASE(is_0_by_default)
 	{
@@ -267,6 +274,9 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 		VerifyRational(CRational(1, 2) /= 3, 1, 6);
 
 		VerifyRational(CRational(1, 2) /= 1, 1, 2);
+
+		BOOST_CHECK_THROW(CRational(1, 2) /= CRational(1, 0), std::invalid_argument);
+		BOOST_CHECK_THROW(CRational(1, 2) /= 0, std::invalid_argument);
 	}
 
 
@@ -345,6 +355,17 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 		VerifyRational(rat, 7, 15);
 	}
 
+	// может быть представлен в виде смешанной дроби
+	BOOST_AUTO_TEST_CASE(can_be_evaluated_as_compound_fraction)
+	{
+		VerifyCompoundFraction(CRational(9, 4), 2, 1, 4);
+		VerifyCompoundFraction(CRational(-9, 4), -2, -1, 4);
+	}
 
+	// не принимает 0 в качестве знаменателя
+	BOOST_AUTO_TEST_CASE(dont_accept_zero_as_denominator)
+	{
+		BOOST_CHECK_THROW(CRational(1, 0), std::invalid_argument);
+	}
 
 BOOST_AUTO_TEST_SUITE_END()
