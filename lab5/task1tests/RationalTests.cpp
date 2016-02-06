@@ -359,6 +359,16 @@ BOOST_AUTO_TEST_CASE(operator_multiply_equals)
 		ss >> rat;
 		VerifyRational(rat, 0, 1);
 		BOOST_CHECK(ss.fail());
+
+		ss << "7e8";
+		ss >> rat;
+		VerifyRational(rat, 0, 1);
+		BOOST_CHECK(ss.fail());
+
+		ss << "d/4";
+		ss >> rat;
+		VerifyRational(rat, 0, 1);
+		BOOST_CHECK(ss.fail());
 	}
 
 	// может быть представлен в виде смешанной дроби

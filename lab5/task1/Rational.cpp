@@ -23,16 +23,8 @@ CRational::CRational(int numerator, int denominator)
 
 std::pair<int, CRational> CRational::ToCompoundFraction()const
 {
-	int intPart = 0;
-	CRational fractPart(m_numerator, m_denominator);
-
-	if (abs(m_numerator) >= abs(m_denominator))
-	{
-		intPart = m_numerator / m_denominator;
-		fractPart = CRational(m_numerator - (intPart * m_denominator), m_denominator);
-	}
-
-	return std::pair<int, CRational>(intPart, fractPart);
+	auto intPart = m_numerator / m_denominator;
+	return { intPart, *this - intPart };
 }
 
 int CRational::GetNumerator() const
